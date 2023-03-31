@@ -1,0 +1,22 @@
+{
+  "name": "react-map-with-markers",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@aws-amplify/ui-react": "^4.4.0",
+    "aws-amplify": "^5.0.23",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^2.0.0",
+    "vite": "^3.0.0"
+  }
+}
