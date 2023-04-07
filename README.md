@@ -1,11 +1,12 @@
-## My Project
+# Amazon Location Samples for React (JavaScript)
 
-TODO: Fill this README out!
+This repository contains a set of sample applications for Amazon Location Service. The sample apps are built with JavaScript, React, HTML, and CSS.
 
-Be sure to:
+## List of sample apps
 
-* Change the title in this README
-* Edit your repository description on GitHub
+- [Display a web map using Amplify](map-with-amplify/)
+- [Display GeoJSON on a web map](map-with-geojson/)
+- [Display markers on a web map](map-with-markers/)
 
 ## Security
 
@@ -13,5 +14,4 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+These samples are licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
