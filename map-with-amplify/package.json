@@ -13,7 +13,7 @@
     "aws-amplify": "^5.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-map-gl": "*"
+    "react-map-gl": "7.0.15"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^3.0.0",
