@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { useState } from "react";
-import { Marker } from "react-map-gl";
+import { Marker } from "react-map-gl/maplibre";
 
 // Customized popup that displays locker titles and descriptions
 import LockerPopup from "./LockerPopup";
@@ -45,10 +45,7 @@ export default ({ lockers }) => {
       }
       {/* Display a popup when a locker is selected */}
       {selectedLocker && (
-        <LockerPopup
-          locker={selectedLocker}
-          onClose={() => setSelectedLocker(null)}
-        />
+        <LockerPopup locker={selectedLocker} onClose={() => setSelectedLocker(null)} />
       )}
     </>
   );

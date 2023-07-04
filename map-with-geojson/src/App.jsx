@@ -1,32 +1,35 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import {MapView} from "@aws-amplify/ui-react";
-import {NavigationControl} from "react-map-gl";
+import Map, { NavigationControl } from "react-map-gl/maplibre";
+import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-// Amplify configuration
-import "./config";
 import VancouverOverlay from "./VancouverOverlay";
 
-export default () => (
-      <MapView
-            // See https://ui.docs.amplify.aws/react/connected-components/geo#mapview
-            initialViewState={{
-                  latitude: 49.2819,
-                  longitude: -123.1187,
-                  zoom: 11,
-            }}
-      >
-            {/* See https://visgl.github.io/react-map-gl/docs/api-reference/navigation-control */}
-            <NavigationControl
-                  position="bottom-right"
-                  showZoom
-                  showCompass={false}
-            />
+const identityPoolId = import.meta.env.VITE_IDENTITY_POOL_ID;
+const region = import.meta.env.VITE_REGION;
+const mapName = import.meta.env.VITE_MAP_NAME;
 
-            {/* Display the city of Vancouver as a polygon overlay */}
-            <VancouverOverlay />
-      </MapView>
+const authHelper = await withIdentityPoolId(identityPoolId);
+
+export default () => (
+  <Map
+    // See https://visgl.github.io/react-map-gl/docs/api-reference/map
+    initialViewState={{
+      latitude: 49.2819,
+      longitude: -123.1187,
+      zoom: 11,
+    }}
+    style={{ height: "100vh", width: "100vw" }}
+    mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`}
+    {...authHelper.getMapAuthenticationOptions()}
+  >
+    {/* See https://visgl.github.io/react-map-gl/docs/api-reference/navigation-control */}
+    <NavigationControl position="bottom-right" showZoom showCompass={false} />
+
+    {/* Display the city of Vancouver as a polygon overlay */}
+    <VancouverOverlay />
+  </Map>
 );

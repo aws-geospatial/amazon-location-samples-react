@@ -1,12 +1,7 @@
-# Display GeoJSON on a web map using React and AWS Amplify
+# Display GeoJSON on a web map using React
 
-This example demonstrates how to display GeoJSON on a web map using [React](https://react.dev/),
-[AWS Amplify UI](https://ui.docs.amplify.aws/?platform=react), and
-[react-map-gl](https://visgl.github.io/react-map-gl/). It uses [Amazon Location Service's
-Maps](https://aws.amazon.com/location/) as the base map provider and [MapLibre GL
-JS](https://maplibre.org/maplibre-gl-js-docs/api/) (via Amplify UI and
-[react-map-gl](https://visgl.github.io/react-map-gl/)) as the map rendering library, with
-authentication managed by [Amplify](https://aws.amazon.com/amplify/).
+This example demonstrates how to display GeoJSON on a web map using [React](https://react.dev/), [react-map-gl](https://visgl.github.io/react-map-gl/), and [Amazon Location's authentication helper](https://github.com/aws-geospatial/amazon-location-utilities-auth-helper-js). It uses [Amazon Location Service's Maps](https://aws.amazon.com/location/) as the base map provider and [MapLibre GL
+JS](https://maplibre.org/maplibre-gl-js-docs/api/) (via [react-map-gl](https://visgl.github.io/react-map-gl/)) as the map rendering library with authentication managed by [Amazon Location's authentication helper](https://github.com/aws-geospatial/amazon-location-utilities-auth-helper-js).
 
 ## Create resources
 
@@ -16,7 +11,7 @@ open the AWS Management Console and initiate the CloudFormation template deploym
 [![Launch Stack](https://amazon-location-cloudformation-templates.s3.us-west-2.amazonaws.com/cfn-launch-stack-button.svg)](https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?stackName=react-map-with-geojson-example&templateURL=https://amazon-location-cloudformation-templates.s3.us-west-2.amazonaws.com/samples/web-react-map-with-geojson/template.yaml)
 
 Once the deployment process is complete, go to the **Outputs** section to get the Amazon Cognito
-Identity Pool ID, AWS Region, Map resource name, and style.
+Identity Pool ID, AWS Region, and Map resource name.
 
 ## Configure
 
@@ -35,10 +30,10 @@ To remove all of the resources created in this walkthrough, delete the CloudForm
 
 ## Get help
 
-* Have a bug to report? [Open an
+- Have a bug to report? [Open an
   issue](https://github.com/aws-geospatial/code-example-web-react-map-with-geojson/issues/new). If
   possible, include details about your development environment, and an example that shows the issue.
-* Have an example request? [Open an
+- Have an example request? [Open an
   issue](https://github.com/aws-samples/amazon-location-samples/issues/new). Tell us what the
   example should do and why you want it.
 
