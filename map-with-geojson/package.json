@@ -9,11 +9,11 @@
             "preview": "vite preview"
       },
       "dependencies": {
-            "@aws-amplify/ui-react": "^4.4.0",
-            "aws-amplify": "^5.0.20",
+            "@aws/amazon-location-utilities-auth-helper": "^1.0.0",
+            "maplibre-gl": "^3.1.0",
             "react": "^18.2.0",
             "react-dom": "^18.2.0",
-            "react-map-gl": "7.0.15"
+            "react-map-gl": "^7.1.0"
       },
       "devDependencies": {
             "@vitejs/plugin-react": "^3.0.0",

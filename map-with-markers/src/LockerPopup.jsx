@@ -1,13 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Popup } from "react-map-gl";
+import { Popup } from "react-map-gl/maplibre";
 
 // A popup containing locker details
-export default ({
-  locker: { latitude, longitude, title, description },
-  onClose,
-}) => (
+export default ({ locker: { latitude, longitude, title, description }, onClose }) => (
   // See https://visgl.github.io/react-map-gl/docs/api-reference/popup
   <Popup
     latitude={latitude}

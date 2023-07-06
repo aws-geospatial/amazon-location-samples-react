@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Source, Layer } from "react-map-gl";
+import { Source, Layer } from "react-map-gl/maplibre";
 
 // boundary of the city of Vancouver
 import vancouver from "./vancouver.json";
@@ -12,9 +12,6 @@ export default () => (
   <Source type="geojson" data={vancouver}>
     {/* Create a map layer that displays the boundary and styles it
           See https://visgl.github.io/react-map-gl/docs/api-reference/layer */}
-    <Layer
-      type="fill"
-      paint={{ "fill-color": "steelblue", "fill-opacity": 0.3 }}
-    />
+    <Layer type="fill" paint={{ "fill-color": "steelblue", "fill-opacity": 0.3 }} />
   </Source>
 );
