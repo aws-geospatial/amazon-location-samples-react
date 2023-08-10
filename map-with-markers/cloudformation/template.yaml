@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: This CloudFormation template provisions the resources required for react-map-with-markers-example.
+Description: This CloudFormation template provisions the resources required for react-map-with-markers.
 
 Parameters:
   # Allow one of the Amazon Location map styles to be selected from a list
@@ -29,28 +29,28 @@ Parameters:
 Resources:
   # Create a Cognito Identity pool that supports unauthenticated (anonymous) users
   CognitoIdentityPool:
-    Type: 'AWS::Cognito::IdentityPool'
+    Type: "AWS::Cognito::IdentityPool"
     Properties:
       AllowUnauthenticatedIdentities: true
-      IdentityPoolName: react-map-with-markers-example
+      IdentityPoolName: react-map-with-markers
 
   # Create an IAM role with permission to call Amazon Location Maps that will be mapped to
   # unauthenticated requests by the Cognito Identity Pool
   CognitoIdentityPoolUnauthRole:
-    Type: 'AWS::IAM::Role'
+    Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-          - Action: 'sts:AssumeRoleWithWebIdentity'
+          - Action: "sts:AssumeRoleWithWebIdentity"
             Condition:
-              'ForAnyValue:StringLike':
-                'cognito-identity.amazonaws.com:amr': unauthenticated
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
             Effect: Allow
             Principal:
               Federated: cognito-identity.amazonaws.com
         Version: 2012-10-17
       Policies:
-        - PolicyName: react-map-with-markers-example-unauth-policy
+        - PolicyName: react-map-with-markers-unauth-policy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -61,7 +61,7 @@ Resources:
 
   # Attach the IAM role to the Identity Pool
   CognitoIdentityPoolDefaultRoleAttachment:
-    Type: 'AWS::Cognito::IdentityPoolRoleAttachment'
+    Type: "AWS::Cognito::IdentityPoolRoleAttachment"
     Properties:
       IdentityPoolId: !Ref CognitoIdentityPool
       Roles:
@@ -70,11 +70,11 @@ Resources:
   # Create an Amazon Location Map resource using the style passed in as a parameter
   AmazonLocationMap:
     Type: AWS::Location::Map
-    Properties: 
-      Configuration: 
+    Properties:
+      Configuration:
         Style: !Ref MapStyle
-      Description: !Sub 'Managed by CloudFormation: ${AWS::StackName}'
-      MapName: react-map-with-markers-example
+      Description: !Sub "Managed by CloudFormation: ${AWS::StackName}"
+      MapName: react-map-with-markers
 
 # Outputs to transcribe into .env to configure the React app
 Outputs:
@@ -84,12 +84,12 @@ Outputs:
 
   # Value to fill in as VITE_REGION
   Region:
-    Value: !Sub '${AWS::Region}'
+    Value: !Sub "${AWS::Region}"
 
   # Value to fill in as VITE_MAP_NAME
-  MapName: 
-    Value: react-map-with-markers-example
+  MapName:
+    Value: react-map-with-markers
 
   # Value to fill in as VITE_MAP_STYLE
-  MapStyle: 
+  MapStyle:
     Value: !Ref MapStyle
