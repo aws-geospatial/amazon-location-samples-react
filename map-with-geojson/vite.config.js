@@ -21,6 +21,7 @@ export default defineConfig({
   build: {
     outDir: "./build",
     commonjsOptions: { include: [] },
+    target: "esnext"
   },
   optimizeDeps: {
     disabled: false,
