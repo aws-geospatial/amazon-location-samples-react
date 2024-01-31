@@ -31,7 +31,7 @@ To remove all of the resources created in this walkthrough, delete the CloudForm
 ## Get help
 
 - Have a bug to report? [Open an
-  issue](https://github.com/aws-geospatial/code-example-web-react-map-with-markers/issues/new). If
+  issue](https://github.com/aws-geospatial/amazon-location-samples-react/issues/new). If
   possible, include details about your development environment, and an example that shows the issue.
 - Have an example request? [Open an
   issue](https://github.com/aws-samples/amazon-location-samples/issues/new). Tell us what the
