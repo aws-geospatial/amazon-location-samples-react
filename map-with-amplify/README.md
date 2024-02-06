@@ -24,6 +24,8 @@ outputs.
 
 ## Run
 
+Run `npm install` to install all the dependencies.
+
 Run `npm start` to start a local web server on [`localhost:3000`](http://localhost:3000/) with this
 example and open it in a browser.
 
