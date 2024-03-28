@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A Template to provision Kinesis resources for the Amazon Location Live Device Tracking and Geofencing sample app.
+Resources:
+  TrackingAndGeofencingSampleKinesisDataStream:
+    Type: 'AWS::Kinesis::Stream'
+    Properties:
+      Name: 'TrackingAndGeofencingSampleKinesisDataStream'
+      ShardCount: 3
+      StreamEncryption:
+        EncryptionType: 'KMS'
+        KeyId: 'alias/aws/kinesis' # Using managed Server-side Encryption (SSE). You can use your own Customer Managed KMS key here.
+Outputs:
+  TrackingAndGeofencingSampleKinesisDataStreamARN:
+    Description: 'The ARN of the created Kinesis Data Stream'
+    Value: !GetAtt TrackingAndGeofencingSampleKinesisDataStream.Arn

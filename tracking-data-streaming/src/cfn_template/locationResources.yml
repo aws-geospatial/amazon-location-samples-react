@@ -1,0 +1,238 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A Template to provision Amazon Location Service Resources for the Amazon Location Live Device Tracking and Geofencing sample app.
+Parameters:
+  TrackerName:
+    Type: String
+    Description: Name of the Amazon Location Tracker to use.
+Resources:
+  TrackingAndGeofencingSampleMap:
+    Type: AWS::Location::Map
+    Properties:
+      Configuration:
+        Style: VectorHereExplore
+      Description: Map Resource created for the Amazon Location Live Device Tracking and Geofencing sample app.
+      MapName: TrackingAndGeofencingSampleMapHere
+  TrackingAndGeofencingSampleCollection:
+    Type: AWS::Location::GeofenceCollection
+    DependsOn: TrackingAndGeofencingSampleMap
+    Properties:
+      CollectionName: TrackingAndGeofencingSampleCollection
+      Description: Geofence Collection created for the Amazon Location Live Device Tracking and Geofencing sample app.
+  TrackingAndGeofencingSampleCollectionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: TrackingAndGeofencingSampleCollection
+    Properties:
+      LogGroupName: "/aws/events/AmazonLocationMonitor-TrackingAndGeofencingSampleCollection"
+  TrackingAndGeofencingSampleTrackerConsumer:
+    Type: "AWS::Location::TrackerConsumer"
+    DependsOn: TrackingAndGeofencingSampleCollectionLogGroup
+    Properties:
+      ConsumerArn: !GetAtt TrackingAndGeofencingSampleCollection.Arn
+      TrackerName: !Ref TrackerName
+  TrackingAndGeofencingSampleSQSQueue:
+    Type: AWS::SQS::Queue
+    DependsOn: TrackingAndGeofencingSampleTrackerConsumer
+    Properties:
+      QueueName: TrackingAndGeofencingSampleGeofenceEventQueue
+      SqsManagedSseEnabled: true
+  TrackingAndGeofencingSampleCollectionGeofenceRule:
+    Type: AWS::Events::Rule
+    DependsOn: TrackingAndGeofencingSampleSQSQueue
+    Properties:
+      Description: EventBridge Rule for the Amazon Location Live Device Tracking and Geofencing sample app Geofence Events
+      EventPattern:
+        source:
+          - aws.geo
+        detail-type:
+          - "Location Geofence Event"
+      Name: TrackingAndGeofencingSampleCollectionGeofenceRule
+      Targets:
+        - Arn: !GetAtt TrackingAndGeofencingSampleCollectionLogGroup.Arn
+          Id: "TargetCloudWatchLogGroup"
+        - Arn: !GetAtt TrackingAndGeofencingSampleSQSQueue.Arn
+          Id: "TargetSQSQueue"
+  # Allow EventBridge to invoke SQS
+  TrackingAndGeofencingSampleEventBridgeToToSqsPolicy:
+    Type: AWS::SQS::QueuePolicy
+    DependsOn: TrackingAndGeofencingSampleCollectionGeofenceRule
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: SQS:SendMessage
+            Resource: !GetAtt TrackingAndGeofencingSampleSQSQueue.Arn
+          - Effect: Allow
+            Action:
+              - kms:Encrypt
+              - kms:GenerateDataKey
+            Resource: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*'
+      Queues:
+        - Ref: TrackingAndGeofencingSampleSQSQueue
+  TrackingAndGeofencingSampleWriteOnlyIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    DependsOn: TrackingAndGeofencingSampleCollection
+    Properties:
+      AllowUnauthenticatedIdentities: True
+      IdentityPoolName: TrackingAndGeofencingSampleWriteOnlyIdentityPool
+  TrackingAndGeofencingSampleWriteOnlyIdentityPoolRole:
+    DependsOn: TrackingAndGeofencingSampleWriteOnlyIdentityPool
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Role created for usage with Cognito as part of the Amazon Location Live Device Tracking and Geofencing sample app.
+      RoleName: LocationTrackingAndGeofencingSampleWriteOnlyCognitoUnAuthRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref TrackingAndGeofencingSampleWriteOnlyIdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+      Policies:
+        - PolicyName: TrackingAndGeofencingSampleUnAuthPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "geo:PutGeofence"
+                  - "geo:BatchDeleteGeofence"
+                Resource: !GetAtt TrackingAndGeofencingSampleCollection.Arn
+              - Effect: Allow
+                Action:
+                  - "sqs:DeleteMessage"
+                Resource: !GetAtt TrackingAndGeofencingSampleSQSQueue.Arn
+              - Effect: Allow
+                Action:
+                  - "kinesis:PutRecords"
+                Resource: !Sub 'arn:${AWS::Partition}:kinesis:${AWS::Region}:${AWS::AccountId}:stream/TrackingAndGeofencingSampleKinesisDataStream'
+              - Effect: Allow
+                Action:
+                  - "kms:Encrypt"
+                  - "kms:GenerateDataKey"
+                Resource: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*'
+
+  TrackingAndGeofencingSampleReadOnlyIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    DependsOn: TrackingAndGeofencingSampleCollection
+    Properties:
+      AllowUnauthenticatedIdentities: True
+      IdentityPoolName: TrackingAndGeofencingSampleWriteOnlyIdentityPool
+  TrackingAndGeofencingSampleReadOnlyIdentityPoolRole:
+    DependsOn: TrackingAndGeofencingSampleReadOnlyIdentityPool
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Role created for readonly usage with Cognito as part of the Amazon Location Live Device Tracking and Geofencing sample app.
+      RoleName: LocationTrackingAndGeofencingSampleReadOnlyCognitoUnAuthRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref TrackingAndGeofencingSampleReadOnlyIdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+      Policies:
+        - PolicyName: TrackingAndGeofencingSampleReadOnlyUnAuthPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "geo:GetMap*"
+                Resource: !Sub 'arn:aws:geo:${AWS::Region}:${AWS::AccountId}:map/TrackingAndGeofencingSampleMap*'
+              - Effect: Allow
+                Action:
+                  - "geo:ListGeofences"
+                Resource: !GetAtt TrackingAndGeofencingSampleCollection.Arn
+              - Effect: Allow
+                Action:
+                  - "geo:ListDevicePositions"
+                  - "geo:GetDevicePositionHistory"
+                Resource: !Sub 'arn:${AWS::Partition}:geo:${AWS::Region}:${AWS::AccountId}:tracker/${TrackerName}'
+              - Effect: Allow
+                Action:
+                  - "sqs:ReceiveMessage"
+                  - "sqs:GetQueueUrl"
+                Resource: !GetAtt TrackingAndGeofencingSampleSQSQueue.Arn
+              - Effect: Allow
+                Action:
+                  - "kms:Decrypt"
+                  - "kms:GenerateDataKey"
+                Resource: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*'
+
+  TrackingAndGeofencingSampleCloudwatchLogsEventPermission:
+    Type: AWS::Logs::ResourcePolicy
+    Properties:
+      PolicyName: "TrackingAndGeofencingSampleEventBridgeCloudwatchLogs"
+      PolicyDocument: !Sub >
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "EventBridgetoCWLogsCreateLogStreamPolicy",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "events.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "logs:CreateLogStream"
+              ],
+              "Resource": [
+                "*"
+              ]
+            },
+            {
+              "Sid": "EventBridgetoCWLogsPutLogEventsPolicy",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "events.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }
+          ]
+        }
+
+  TrackingAndGeofencingSampleWriteOnlyIdentityPoolRoleMapping:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    DependsOn: TrackingAndGeofencingSampleWriteOnlyIdentityPoolRole
+    Properties:
+      IdentityPoolId: !Ref TrackingAndGeofencingSampleWriteOnlyIdentityPool
+      Roles:
+        unauthenticated: !GetAtt TrackingAndGeofencingSampleWriteOnlyIdentityPoolRole.Arn
+  TrackingAndGeofencingSampleReadOnlyIdentityPoolRoleMapping:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    DependsOn: TrackingAndGeofencingSampleReadOnlyIdentityPoolRole
+    Properties:
+      IdentityPoolId: !Ref TrackingAndGeofencingSampleReadOnlyIdentityPool
+      Roles:
+        unauthenticated: !GetAtt TrackingAndGeofencingSampleReadOnlyIdentityPoolRole.Arn
+
+Outputs:
+  TrackingAndGeofencingSampleWriteOnlyCognitoPoolId:
+    Description: The Cognito Pool Id value for authentication for the Amazon Location Live Device Tracking and Geofencing sample app.
+    Value: !Ref TrackingAndGeofencingSampleWriteOnlyIdentityPool
+  TrackingAndGeofencingSampleReadOnlyCognitoPoolId:
+    Description: The Cognito Pool Id value for authentication for the Amazon Location Live Device Tracking and Geofencing sample app.
+    Value: !Ref TrackingAndGeofencingSampleReadOnlyIdentityPool
