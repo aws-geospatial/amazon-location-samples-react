@@ -3,8 +3,8 @@
 # Configurable variables
 TrackerName="SampleTracker"
 
-# SAR application id for kinesis-stream-device-data-to-location-tracker app
-ApplicationId="arn:aws:serverlessrepo:us-west-2:989216627842:applications/kinesis-stream-device-data-to-location-tracker"
+# SAR application id for kinesis-stream-device-data-to-amazon-location-tracker app
+ApplicationId="arn:aws:serverlessrepo:us-east-1:003883091127:applications/kinesis-stream-device-data-to-amazon-location-tracker"
 
 if [ -z "$AWS_REGION" ]; then
   echo "Error: AWS_REGION is not set. You may set the environment variable with this command: 'export AWS_REGION=<your region>'."
