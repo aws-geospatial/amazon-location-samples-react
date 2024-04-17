@@ -3,6 +3,11 @@
 # Configurable variables
 TrackerName="SampleTracker"
 
+# Choose true to deploy IoT Core Rules to send Location Updates from the MQTT Topic 'location'. Default value false.
+DeployIoT=false
+# Choose true to deploy additional resources to enable Location Updates to be sent to S3 for long term storage and analysis. Default value false.
+DeployAnalytics=false
+
 # SAR application id for kinesis-stream-device-data-to-amazon-location-tracker app
 ApplicationId="arn:aws:serverlessrepo:us-east-1:003883091127:applications/kinesis-stream-device-data-to-amazon-location-tracker"
 
@@ -96,5 +101,29 @@ aws cloudformation deploy \
   --parameter-overrides TrackerName=${TrackerName} \
   --region ${AWS_REGION} \
   --capabilities CAPABILITY_NAMED_IAM
+
+
+
+if $DeployIoT
+then
+  echo "Deploying cloudformation template for IoT Sample app using TrackerName: $TrackerName and region: $AWS_REGION."
+  aws cloudformation deploy \
+  --template-file src/cfn_template/iotResources.yml \
+  --stack-name TrackingAndGeofencingSampleIoT \
+  --parameter-overrides TrackerName=${TrackerName} \
+  --region ${AWS_REGION} \
+  --capabilities CAPABILITY_NAMED_IAM
+fi
+
+if $DeployAnalytics
+then
+  echo "Deploying cloudformation template for Analytics Sample app using TrackerName: $TrackerName and region: $AWS_REGION."
+  aws cloudformation deploy \
+  --template-file src/cfn_template/analyticsResources.yml \
+  --stack-name TrackingAndGeofencingSampleAnalytics \
+  --parameter-overrides TrackerName=${TrackerName} \
+  --region ${AWS_REGION} \
+  --capabilities CAPABILITY_NAMED_IAM
+fi
 
 echo "All deployments complete!"

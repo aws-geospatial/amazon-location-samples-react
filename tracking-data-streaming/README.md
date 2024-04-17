@@ -59,7 +59,8 @@ This sample app uses two [Unauthenticated Cognito Identity Pool roles](https://d
 2. A write-only role which allows only write access such as `geo:PutGeofence` and `kinesis:PutRecords`, etc.
 
 The separation follows the [Principle of Least Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
-
+## IoT and Analytics Integration
+This sample can be integrated with AWS IoT Core and AWS Analytics services as demonstrated in [Guidance for Tracking Assets & Locating Devices Using AWS IoT](https://aws.amazon.com/solutions/guidance/tracking-assets-and-locating-devices-using-aws-iot/). To track positions using AWS IoT Core, modify the `./deploy_cloudformation` file and set the `DeployIoT` variable to `true`. To enable location updates being sent to Amazon S3 for analtyics, modify `./deploy_cloudformation` and set the `DeployAnalytics` variable to `true`
 ## Security
 
 See [CONTRIBUTING](./CONTRIBUTING.md#security-issue-notifications) for more information.
