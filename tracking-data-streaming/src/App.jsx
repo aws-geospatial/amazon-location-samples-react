@@ -27,10 +27,27 @@ import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
 import "./index.css";
 
 // As a best practice, splitting out the Read permissions to a readOnly role so that customers' permissions are strictly separate from system admin's.
-const readOnlyAuthHelper = await withIdentityPoolId(READ_ONLY_IDENTITY_POOL_ID);
-const writeOnlyAuthHelper = await withIdentityPoolId(WRITE_ONLY_IDENTITY_POOL_ID);
+let authHelpers = {
+  readOnly: undefined,
+  writeOnly: undefined,
+};
+
+const getAuthHelpers = async () => {
+  if (!authHelpers.readOnlyAuthHelper) {
+    authHelpers.readOnlyAuthHelper = await withIdentityPoolId(
+      READ_ONLY_IDENTITY_POOL_ID
+    );
+  }
+  if (!authHelpers.writeOnlyAuthHelper) {
+    authHelpers.writeOnlyAuthHelper = await withIdentityPoolId(
+      WRITE_ONLY_IDENTITY_POOL_ID
+    );
+  }
+  return authHelpers;
+};
 
 const App = () => {
+  const [readOnlyAuthHelper, setReadOnlyAuthHelper] = useState();
   const [readOnlyRoleCredentials, setReadOnlyRoleCredentials] = useState();
   const [writeOnlyRoleCredentials, setWriteOnlyRoleCredentials] = useState();
   const [readOnlyLocationClient, setReadOnlyLocationClient] = useState();
@@ -45,8 +62,14 @@ const App = () => {
   //Fetch writeOnlyRoleCredentials when the app loads
   useEffect(() => {
     const fetchCredentials = async () => {
-      setReadOnlyRoleCredentials(readOnlyAuthHelper.getLocationClientConfig);
-      setWriteOnlyRoleCredentials(writeOnlyAuthHelper.getLocationClientConfig());
+      const authHelpers = await getAuthHelpers();
+      setReadOnlyRoleCredentials(
+        authHelpers.readOnlyAuthHelper.getLocationClientConfig
+      );
+      setWriteOnlyRoleCredentials(
+        authHelpers.writeOnlyAuthHelper.getLocationClientConfig()
+      );
+      setReadOnlyAuthHelper(authHelpers.readOnlyAuthHelper);
     };
     fetchCredentials();
   }, []);
