@@ -227,11 +227,25 @@ const TrackersLayer = ({
 
   useEffect(() => {
     let cleanupSqs;
-    let cleanupDevicePositionPoll;
 
     const startPolling = async () => {
       if (isRunningDemo) {
         cleanupSqs = await startPollingSQS();
+      }
+    };
+
+    startPolling();
+
+    return () => {
+      if (cleanupSqs) cleanupSqs();
+    };
+  }, [isRunningDemo]);
+
+  useEffect(() => {
+    let cleanupDevicePositionPoll;
+
+    const startPolling = async () => {
+      if (isOpenedPanel) {
         cleanupDevicePositionPoll = await startPollingDevicePosition();
       }
     };
@@ -239,11 +253,9 @@ const TrackersLayer = ({
     startPolling();
 
     return () => {
-      // These functions will be called when the component unmounts or before the effect runs again.
-      if (cleanupSqs) cleanupSqs();
       if (cleanupDevicePositionPoll) cleanupDevicePositionPoll();
     };
-  }, [isRunningDemo]);
+  }, [isOpenedPanel]);
 
   const handleViewDeviceHistory = (deviceId) => {
     // Specify which device to look into for the history
