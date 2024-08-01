@@ -4,7 +4,6 @@ This repository contains a set of sample applications for Amazon Location Servic
 
 ## List of sample apps
 
-- [Display a web map using Amplify](map-with-amplify/)
 - [Display GeoJSON on a web map](map-with-geojson/)
 - [Display markers on a web map](map-with-markers/)
 - [Stream device positions, display device and geofence breaching notifications on a web map](tracking-data-streaming/)
