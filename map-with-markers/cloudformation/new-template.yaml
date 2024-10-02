@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This CloudFormation template provisions the resources required for react-map-with-markers.
+
+Resources:
+  # Create an Amazon Location Map resource
+  AmazonLocationApiKey:
+    Type: AWS::Location::ApiKey
+    Properties:
+      ApiKeyName: MyAmazonLocationApiKey
+      Description: API Key for Amazon Location Service Maps
+      Restrictions:
+        AllowedActions:
+          - geo-maps
+        AllowedResourceArns:
+          - arn:aws:geo-maps:${AWS::Region}::provider/default
+
+# Outputs to transcribe into .env to configure the React app
+Outputs:
+  # Value to fill in as VITE_API_KEY
+  ApiKey:
+    Value: !Ref AmazonLocationApiKey
+
+  # Value to fill in as VITE_REGION
+  Region:
+    Value: !Sub "${AWS::Region}"
