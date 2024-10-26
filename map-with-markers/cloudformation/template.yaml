@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: This CloudFormation template provisions the resources required for react-map-with-markers.
 
 Resources:
-  # Create an Amazon Location Map resource
+  # Create an API key that has access to maps
   AmazonLocationApiKey:
     Type: AWS::Location::APIKey
     Properties:
