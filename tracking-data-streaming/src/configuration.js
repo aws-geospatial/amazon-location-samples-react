@@ -9,8 +9,8 @@ export const REGION = "<your aws region>"; // REQUIRED - Amazon Cognito Region
 export const API_KEY = "<your api key>"; // REQUIRED - Amazon Location API key
 
 export const MAP = {
-      STYLE: "Standard", // REQUIRED - String representing the style of map resource
-      COLOR_SCHEME: "Light", // REQUIRED - String representing the color scheme of map resource
+      STYLE: "Standard", // REQUIRED - String containing the desired map style name
+      COLOR_SCHEME: "Light", // REQUIRED - String containing the desired map color scheme
 };
 
 export const GEOFENCE = "TrackingAndGeofencingSampleCollection"; // REQUIRED - Amazon Location Service geofence collection resource name

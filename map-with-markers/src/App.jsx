@@ -36,11 +36,6 @@ export default () => (
             }}
             style={{height: "100vh", width: "100vw"}}
             mapStyle={`https://maps.geo.${region}.amazonaws.com/v2/styles/Standard/descriptor?key=${apiKey}&color-scheme=Light`}
-            transformRequest={(url) =>
-                  url.indexOf("?key=") > -1
-                        ? {url: url}
-                        : {url: url + `?key=${apiKey}`}
-            }
       >
             {/* See https://visgl.github.io/react-map-gl/docs/api-reference/navigation-control */}
             <NavigationControl
