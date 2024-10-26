@@ -5,16 +5,20 @@ Parameters:
     Type: String
     Description: Name of the Amazon Location Tracker to use.
 Resources:
-  TrackingAndGeofencingSampleMap:
-    Type: AWS::Location::Map
+  AmazonLocationApiKey:
+    Type: AWS::Location::APIKey
     Properties:
-      Configuration:
-        Style: VectorHereExplore
-      Description: Map Resource created for the Amazon Location Live Device Tracking and Geofencing sample app.
-      MapName: TrackingAndGeofencingSampleMapHere
+      KeyName: react-map-with-geojson
+      Description: API Key for Amazon Location Service Maps
+      NoExpiry: true
+      Restrictions:
+        AllowActions:
+          - "geo-maps:*"
+        AllowResources:
+          - !Sub "arn:aws:geo-maps:${AWS::Region}::provider/default"
   TrackingAndGeofencingSampleCollection:
     Type: AWS::Location::GeofenceCollection
-    DependsOn: TrackingAndGeofencingSampleMap
+    DependsOn: AmazonLocationApiKey
     Properties:
       CollectionName: TrackingAndGeofencingSampleCollection
       Description: Geofence Collection created for the Amazon Location Live Device Tracking and Geofencing sample app.
@@ -151,10 +155,6 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - "geo:GetMap*"
-                Resource: !Sub 'arn:aws:geo:${AWS::Region}:${AWS::AccountId}:map/TrackingAndGeofencingSampleMap*'
-              - Effect: Allow
-                Action:
                   - "geo:ListGeofences"
                 Resource: !GetAtt TrackingAndGeofencingSampleCollection.Arn
               - Effect: Allow
@@ -230,6 +230,12 @@ Resources:
         unauthenticated: !GetAtt TrackingAndGeofencingSampleReadOnlyIdentityPoolRole.Arn
 
 Outputs:
+  ApiKey:
+    Description: Value to fill in as VITE_API_KEY
+    Value: !Ref AmazonLocationApiKey
+  Region:
+    Description: Value to fill in as VITE_REGION
+    Value: !Sub "${AWS::Region}"
   TrackingAndGeofencingSampleWriteOnlyCognitoPoolId:
     Description: The Cognito Pool Id value for authentication for the Amazon Location Live Device Tracking and Geofencing sample app.
     Value: !Ref TrackingAndGeofencingSampleWriteOnlyIdentityPool
