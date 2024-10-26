@@ -134,11 +134,6 @@ const App = () => {
           }}
           mapStyle={`https://maps.geo.${REGION}.amazonaws.com/v2/styles/${MAP.STYLE}/descriptor?key=${API_KEY}&color-scheme=${MAP.COLOR_SCHEME}`}
           maxZoom={16}
-          transformRequest={(url) =>
-            url.indexOf("?key=") > -1
-                  ? {url: url}
-                  : {url: url + `?key=${apiKey}`}
-      }
         >
           <NavigationControl position="bottom-right" />
           <GeofencesLayer

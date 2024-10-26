@@ -4,11 +4,19 @@ This example demonstrates how to display markers on a web map using [React](http
 
 ## Create resources
 
+<!-- TODO: templateUrl needs to be udpated with the correct template -->
+
 Click the button below to create the necessary AWS resources for this sample app to run. It will open the AWS Management Console and initiate the CloudFormation template deployment process.
 
 [![Launch Stack](https://amazon-location-cloudformation-templates.s3.us-west-2.amazonaws.com/cfn-launch-stack-button.svg)](https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?stackName=react-map-with-markers-example&templateURL=https://amazon-location-cloudformation-templates.s3.us-west-2.amazonaws.com/samples/web-react-map-with-markers/template.yaml)
 
 Once the deployment process is complete, go to the **Outputs** section to get the Amazon Location Maps ApiKey, AWS Region.
+
+- In stack output's tab only the ApiKey name is visible, in order to get the ApiKey value
+- Navigate to Amazon Location Service
+- Click on "API keys" from the left navigation pane
+- Click on the ApiKey name
+- Copy the ApiKey value
 
 ## Configure
 
