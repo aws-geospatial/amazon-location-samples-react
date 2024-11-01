@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { useMemo } from "react";
-import { Source, Layer } from "react-map-gl";
+import { Source, Layer } from "react-map-gl/maplibre";
 
 // Format geofence data into GeoJSON
 const getGeometryJson = (geofences) => {
@@ -43,21 +43,41 @@ const polygonsBreached = {
 };
 
 // Drawn geofences on the map
-const DrawnGeofences = ({ geofences, breachingGeofences, geofencesVisible }) => {
+const DrawnGeofences = ({
+  geofences,
+  breachingGeofences,
+  geofencesVisible,
+}) => {
   const geofenceJson = useMemo(
-      () => getGeometryJson(geofences.filter(item => !breachingGeofences.includes(item.GeofenceId))), [geofences, breachingGeofences]);
+    () =>
+      getGeometryJson(
+        geofences.filter(
+          (item) => !breachingGeofences.includes(item.GeofenceId)
+        )
+      ),
+    [geofences, breachingGeofences]
+  );
   const breachingGeofenceJson = useMemo(
-      () => getGeometryJson(geofences.filter(item => breachingGeofences.includes(item.GeofenceId))), [geofences, breachingGeofences]);
+    () =>
+      getGeometryJson(
+        geofences.filter((item) => breachingGeofences.includes(item.GeofenceId))
+      ),
+    [geofences, breachingGeofences]
+  );
   if (geofencesVisible) {
     return (
-        <>
-          <Source id="drawn-geofences" type="geojson" data={geofenceJson}>
-            <Layer {...polygons} />
-          </Source>
-          <Source id="drawn-geofences-breached" type="geojson" data={breachingGeofenceJson}>
-            <Layer {...polygonsBreached} />
-          </Source>
-        </>
+      <>
+        <Source id="drawn-geofences" type="geojson" data={geofenceJson}>
+          <Layer {...polygons} />
+        </Source>
+        <Source
+          id="drawn-geofences-breached"
+          type="geojson"
+          data={breachingGeofenceJson}
+        >
+          <Layer {...polygonsBreached} />
+        </Source>
+      </>
     );
   } else {
     return;

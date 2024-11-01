@@ -2,21 +2,14 @@
 // SPDX-License-Identifier: MIT-0
 
 import Map, { NavigationControl } from "react-map-gl/maplibre";
-import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
-
 import "maplibre-gl/dist/maplibre-gl.css";
-
 // Amazon Hub Lockers in Vancouver as a GeoJSON FeatureCollection
 import lockerGeoJSON from "./lockers.json";
-
 // React Component that renders markers for all provided lockers
 import LockerMarkers from "./LockerMarkers";
 
-const identityPoolId = import.meta.env.VITE_IDENTITY_POOL_ID;
+const apiKey = import.meta.env.VITE_API_KEY;
 const region = import.meta.env.VITE_REGION;
-const mapName = import.meta.env.VITE_MAP_NAME;
-
-const authHelper = await withIdentityPoolId(identityPoolId);
 
 // transform GeoJSON features into simplified locker objects
 const lockers = lockerGeoJSON.features.map(
@@ -37,13 +30,13 @@ export default () => (
   <Map
     // See https://visgl.github.io/react-map-gl/docs/api-reference/map
     initialViewState={{
-      latitude: 49.2819,
-      longitude: -123.1187,
+      latitude: 49.2509,
+      longitude: -123.1147,
       zoom: 11,
     }}
     style={{ height: "100vh", width: "100vw" }}
-    mapStyle={`https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`}
-    {...authHelper.getMapAuthenticationOptions()}
+    mapStyle={`https://maps.geo.${region}.amazonaws.com/v2/styles/Standard/descriptor?key=${apiKey}&color-scheme=Light`}
+    validateStyle={false} // Disable style validation for faster map load
   >
     {/* See https://visgl.github.io/react-map-gl/docs/api-reference/navigation-control */}
     <NavigationControl position="bottom-right" showZoom showCompass={false} />

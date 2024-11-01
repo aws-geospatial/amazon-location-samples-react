@@ -9,7 +9,8 @@ import {
   REGION,
   MAP,
   WRITE_ONLY_IDENTITY_POOL_ID,
-  READ_ONLY_IDENTITY_POOL_ID
+  READ_ONLY_IDENTITY_POOL_ID,
+  API_KEY,
 } from "./configuration";
 import {
   GEOFENCES_PANEL,
@@ -22,7 +23,7 @@ import GeofencesLayer from "./components/geofences/GeofencesLayer";
 import TrackersLayer from "./components/trackers/TrackersLayer";
 import Map, { NavigationControl } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import "@cloudscape-design/global-styles/index.css"
+import "@cloudscape-design/global-styles/index.css";
 import { withIdentityPoolId } from "@aws/amazon-location-utilities-auth-helper";
 import "./index.css";
 
@@ -76,7 +77,6 @@ const App = () => {
 
   // Instantiate client for aws-sdk whenever the writeOnlyRoleCredentials change
   useEffect(() => {
-
     if (writeOnlyRoleCredentials != null && readOnlyRoleCredentials != null) {
       // Instantiate client for aws-sdk method calls
       const writeOnlyLocationClient = new LocationClient({
@@ -131,9 +131,9 @@ const App = () => {
             latitude: 47.543216,
             zoom: 15,
           }}
-          mapStyle={`https://maps.geo.${REGION}.amazonaws.com/maps/v0/maps/${MAP.NAME}/style-descriptor`}
+          mapStyle={`https://maps.geo.${REGION}.amazonaws.com/v2/styles/${MAP.STYLE}/descriptor?key=${API_KEY}&color-scheme=${MAP.COLOR_SCHEME}`}
           maxZoom={16}
-          {...readOnlyAuthHelper.getMapAuthenticationOptions()}
+          validateStyle={false} // Disable style validation for faster map load
         >
           <NavigationControl position="bottom-right" />
           <GeofencesLayer
@@ -158,7 +158,9 @@ const App = () => {
             onPanelChange={handlePanelChange}
             breachingGeofences={breachingGeofences}
             updateBreachingGeofences={setBreachingGeofences}
-            isViewingDeviceHistory={openedInfoBox === DEVICE_POSITION_HISTORY_VIEWER ? true : false}
+            isViewingDeviceHistory={
+              openedInfoBox === DEVICE_POSITION_HISTORY_VIEWER ? true : false
+            }
             onViewingDeviceHistoryChange={(status) =>
               status
                 ? setOpenedInfoBox(DEVICE_POSITION_HISTORY_VIEWER)
@@ -167,7 +169,7 @@ const App = () => {
           />
         </Map>
       ) : (
-          <h1>Loading...</h1>
+        <h1>Loading...</h1>
       )}
     </>
   );
