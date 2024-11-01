@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { useState, useMemo } from "react";
-import { Marker, Popup, Source, Layer } from "react-map-gl";
+import { Marker, Popup, Source, Layer } from "react-map-gl/maplibre";
 import { VEHICLE_ICON_SIZE } from "../../constants";
 import VehicleIcon from "../common/VehicleIcon";
 import styles from "./Devices.module.css";
@@ -33,7 +33,10 @@ const linePaint = {
 const DevicePositionHistory = ({ deviceHistoryEntries }) => {
   const [selectedHistoryPoint, setSelectedHistoryPoint] = useState();
   // Get GeoJSON line to draw a path for the history of device positions
-  const geojson = useMemo(() => getGeoJson(deviceHistoryEntries), [deviceHistoryEntries]);
+  const geojson = useMemo(
+    () => getGeoJson(deviceHistoryEntries),
+    [deviceHistoryEntries]
+  );
 
   return (
     <>
@@ -51,7 +54,9 @@ const DevicePositionHistory = ({ deviceHistoryEntries }) => {
             >
               <VehicleIcon
                 size={VEHICLE_ICON_SIZE}
-                color={index === deviceHistoryEntries.length - 1 ? "#000" : "#6f6f6f"}
+                color={
+                  index === deviceHistoryEntries.length - 1 ? "#000" : "#6f6f6f"
+                }
               />
             </Marker>
           );
@@ -69,24 +74,32 @@ const DevicePositionHistory = ({ deviceHistoryEntries }) => {
           className={styles.popup}
         >
           <div className={styles.popup__content}>
-            <div className={styles.popup__title}>{selectedHistoryPoint.DeviceId}</div>
+            <div className={styles.popup__title}>
+              {selectedHistoryPoint.DeviceId}
+            </div>
             <div className={styles.popup__coordinates}>
               {`${selectedHistoryPoint.Position[1].toFixed(6)},
               ${selectedHistoryPoint.Position[0].toFixed(6)}`}
             </div>
             <div className={styles.popup__item}>
               <div className={styles.popup__subtitle}>Reported Time</div>
-              <div>{new Date(selectedHistoryPoint.SampleTime).toLocaleString()}</div>
+              <div>
+                {new Date(selectedHistoryPoint.SampleTime).toLocaleString()}
+              </div>
             </div>
             {selectedHistoryPoint.PositionProperties && (
               <div className={styles.popup__item}>
-                <div className={styles.popup__subtitle}>Position Properties</div>
-                {Object.keys(selectedHistoryPoint.PositionProperties).map((key) => (
-                  <div key={key}>
-                    <strong>{key}: </strong>
-                    {selectedHistoryPoint.PositionProperties[key]}
-                  </div>
-                ))}
+                <div className={styles.popup__subtitle}>
+                  Position Properties
+                </div>
+                {Object.keys(selectedHistoryPoint.PositionProperties).map(
+                  (key) => (
+                    <div key={key}>
+                      <strong>{key}: </strong>
+                      {selectedHistoryPoint.PositionProperties[key]}
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>

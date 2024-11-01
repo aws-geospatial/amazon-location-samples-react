@@ -3,34 +3,34 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "start": "vite --open",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aws-sdk/client-kinesis": "^3.515.0",
-    "@aws-sdk/client-sqs": "^3.515.0",
-    "@aws-sdk/client-location": "^3.529.1",
-    "@aws/amazon-location-utilities-auth-helper": "^1.0.4",
-    "@cloudscape-design/components": "^3.0.559",
-    "@cloudscape-design/global-styles": "^1.0.23",
+    "@aws-sdk/client-kinesis": "^3.682.0",
+    "@aws-sdk/client-location": "^3.682.0",
+    "@aws-sdk/client-sqs": "^3.682.0",
+    "@aws/amazon-location-utilities-auth-helper": "^1.1.0",
+    "@cloudscape-design/components": "^3.0.815",
+    "@cloudscape-design/global-styles": "^1.0.32",
     "@mapbox/mapbox-gl-draw": "^1.4.3",
     "events": "^3.3.0",
     "maplibre-gl": "^4.7.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-map-gl": "^7.1.7",
-    "react-spring": "^9.7.3"
+    "react-spring": "^9.7.4"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@vitejs/plugin-react": "^4.0.1",
-    "eslint": "^8.44.0",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.1",
-    "vite": "^4.5.2"
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "vite": "^4.5.5"
   },
   "license": "MIT-0"
 }
