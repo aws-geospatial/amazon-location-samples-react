@@ -5,6 +5,7 @@ Description: This CloudFormation template provisions the resources required for 
 Resources:
   AmazonLocationApiKey:
     Type: AWS::Location::APIKey
+    DeletionPolicy: Retain
     Properties:
       KeyName: react-map-with-geojson
       Description: API Key for Amazon Location Service Maps

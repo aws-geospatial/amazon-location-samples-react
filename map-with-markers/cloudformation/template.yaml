@@ -5,8 +5,9 @@ Resources:
   # Create an API key that has access to maps
   AmazonLocationApiKey:
     Type: AWS::Location::APIKey
+    DeletionPolicy: Retain
     Properties:
-      KeyName: react-map-with-geojson
+      KeyName: react-map-with-markers
       Description: API Key for Amazon Location Service Maps
       NoExpiry: true
       Restrictions:
