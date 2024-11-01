@@ -3,8 +3,8 @@
 
 import { useState } from "react";
 import { Button } from "@cloudscape-design/components";
-import { Marker, Popup } from "react-map-gl";
-import { useSpring, animated } from 'react-spring';
+import { Marker, Popup } from "react-map-gl/maplibre";
+import { useSpring, animated } from "react-spring";
 import { VEHICLE_ICON_SIZE } from "../../constants";
 import VehicleIcon from "../common/VehicleIcon";
 import styles from "./Devices.module.css";
@@ -12,13 +12,18 @@ import styles from "./Devices.module.css";
 const AnimatedMarker = animated(Marker); // This creates an animated version of the Marker
 
 // Display single device with popup if clicked
-const SingleDevice = ({ device, selectedDevice, onChangeSelectedDevice, onViewDeviceHistory }) => {
+const SingleDevice = ({
+  device,
+  selectedDevice,
+  onChangeSelectedDevice,
+  onViewDeviceHistory,
+}) => {
   const lastReportedTime = new Date(device.SampleTime).toLocaleString();
 
   const { latitude, longitude } = useSpring({
     latitude: device.Position[1],
     longitude: device.Position[0],
-    config: { tension: 280, friction: 280, mass: 50 }
+    config: { tension: 280, friction: 280, mass: 50 },
   });
 
   return (
@@ -48,7 +53,9 @@ const SingleDevice = ({ device, selectedDevice, onChangeSelectedDevice, onViewDe
           <div className={styles.popup__content}>
             <div className={styles.popup__title}>{device.DeviceId}</div>
             <div className={styles.popup__coordinates}>
-              {`${device.Position[1].toFixed(6)}, ${device.Position[0].toFixed(6)}`}
+              {`${device.Position[1].toFixed(6)}, ${device.Position[0].toFixed(
+                6
+              )}`}
             </div>
             <div className={styles.popup__item}>
               <div className={styles.popup__subtitle}>Last Reported</div>
@@ -56,7 +63,9 @@ const SingleDevice = ({ device, selectedDevice, onChangeSelectedDevice, onViewDe
             </div>
             {device.PositionProperties && (
               <div className={styles.popup__item}>
-                <div className={styles.popup__subtitle}>Position Properties</div>
+                <div className={styles.popup__subtitle}>
+                  Position Properties
+                </div>
                 {Object.keys(device.PositionProperties).map((key) => (
                   <div key={key}>
                     <strong>{key}: </strong>
