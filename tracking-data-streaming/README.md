@@ -31,7 +31,7 @@ This app has been tested on Node.js v20.11.0 and NPM v9.5.0
 4. Deploy CloudFormation resources via command `./deploy_cloudformation` from the project's root directory. 
 You may need to run `chmod +x ./deploy_cloudformation.sh` before running the script for the first time to setup the permission to run it.
 5. Fill in required fields for Amazon Cognito and Amazon Location Service in [`src/configuration.js`](src/configuration.js). 
-The identity pool ids are generated as part of the CloudFormation deployment and can be found in the Output of the TrackingAndGeofencingSample stack.
+The identity pool ids are generated as part of the CloudFormation deployment and can be found in the Output of the TrackingAndGeofencingSample stack. The API Key can be found in your AWS Account under Amazon Location Service/API Keys/react-tracking-data-streaming
 6. Start the app: run `npm start` from the sample app location on your computer.
 7. Open http://localhost:8080/ on a browser to access the app.
 8. Click on the "Run Demo" button to start the demo. For demo purposes, this demo uses mocked device positions near an Amazon warehouse.
