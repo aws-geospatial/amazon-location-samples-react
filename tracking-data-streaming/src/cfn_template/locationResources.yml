@@ -5,21 +5,8 @@ Parameters:
     Type: String
     Description: Name of the Amazon Location Tracker to use.
 Resources:
-  AmazonLocationApiKey:
-    Type: AWS::Location::APIKey
-    DeletionPolicy: Retain
-    Properties:
-      KeyName: react-tracking-data-streaming
-      Description: API Key for Amazon Location Service Maps
-      NoExpiry: true
-      Restrictions:
-        AllowActions:
-          - "geo-maps:*"
-        AllowResources:
-          - !Sub "arn:aws:geo-maps:${AWS::Region}::provider/default"
   TrackingAndGeofencingSampleCollection:
     Type: AWS::Location::GeofenceCollection
-    DependsOn: AmazonLocationApiKey
     Properties:
       CollectionName: TrackingAndGeofencingSampleCollection
       Description: Geofence Collection created for the Amazon Location Live Device Tracking and Geofencing sample app.
@@ -28,15 +15,9 @@ Resources:
     DependsOn: TrackingAndGeofencingSampleCollection
     Properties:
       LogGroupName: "/aws/events/AmazonLocationMonitor-TrackingAndGeofencingSampleCollection"
-  TrackingAndGeofencingSampleTracker:
-    Type: "AWS::Location::Tracker"
-    DependsOn: TrackingAndGeofencingSampleCollectionLogGroup
-    Properties:
-      TrackerName: !Ref TrackerName
-      Description: Tracker for Tracking and Geofencing sample app
   TrackingAndGeofencingSampleTrackerConsumer:
     Type: "AWS::Location::TrackerConsumer"
-    DependsOn: TrackingAndGeofencingSampleTracker
+    DependsOn: TrackingAndGeofencingSampleCollectionLogGroup
     Properties:
       ConsumerArn: !GetAtt TrackingAndGeofencingSampleCollection.Arn
       TrackerName: !Ref TrackerName
@@ -237,9 +218,6 @@ Resources:
         unauthenticated: !GetAtt TrackingAndGeofencingSampleReadOnlyIdentityPoolRole.Arn
 
 Outputs:
-  ApiKey:
-    Description: Value to fill in as VITE_API_KEY
-    Value: !Ref AmazonLocationApiKey
   Region:
     Description: Value to fill in as VITE_REGION
     Value: !Sub "${AWS::Region}"
