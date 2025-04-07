@@ -17,12 +17,15 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    allowedHosts: true
+    allowedHosts: true,
   },
   build: {
     outDir: "./build",
     commonjsOptions: { include: [] },
-    target: "esnext"
+    rollupOptions: {
+      external: ["react", "react-dom", "react-dom/client", "react/jsx-runtime"],
+    },
+    target: "esnext",
   },
   optimizeDeps: {
     disabled: false,
