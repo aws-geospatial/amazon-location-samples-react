@@ -6,7 +6,7 @@ This example demonstrates how to display GeoJSON on a web map using [React](http
 
 Click the button below to create the necessary AWS resources for this sample app to run. It will open the AWS Management Console and initiate the CloudFormation template deployment process.
 
-[![Launch Stack](https://amazon-location-cloudformation-templates.s3.us-west-2.amazonaws.com/cfn-launch-stack-button.svg)](https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?stackName=react-map-with-geojson-example&templateURL=https://amazon-location-sample-resources.s3.us-west-2.amazonaws.com/react-map-with-geojson/cloudformation/template.yaml)
+[![Launch Stack](https://amazon-location-sample-resources.s3.us-west-2.amazonaws.com/cfn-launch-stack-button.svg)](https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?stackName=react-map-with-geojson-example&templateURL=https://amazon-location-sample-resources.s3.us-west-2.amazonaws.com/react-map-with-geojson/cloudformation/template.yaml)
 
 Once the deployment process is complete, go to the **Outputs** section to get the Amazon Location Maps ApiKey, AWS Region.
 
