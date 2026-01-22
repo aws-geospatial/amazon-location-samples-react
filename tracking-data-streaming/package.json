@@ -8,10 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aws-sdk/client-kinesis": "^3.782.0",
-    "@aws-sdk/client-location": "^3.782.0",
-    "@aws-sdk/client-sqs": "^3.782.0",
-    "@aws/amazon-location-utilities-auth-helper": "^1.2.1",
+    "@aws-sdk/client-kinesis": "^3.914.0",
+    "@aws-sdk/client-location": "^3.914.0",
+    "@aws-sdk/client-sqs": "^3.914.0",
+    "@aws/amazon-location-utilities-auth-helper": "^1.2.4",
     "@cloudscape-design/components": "^3.0.939",
     "@cloudscape-design/global-styles": "^1.0.39",
     "@mapbox/mapbox-gl-draw": "^1.5.0",
