@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Button } from "@cloudscape-design/components";
 import { Marker, Popup } from "react-map-gl/maplibre";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
 import { VEHICLE_ICON_SIZE } from "../../constants";
 import VehicleIcon from "../common/VehicleIcon";
 import styles from "./Devices.module.css";
